@@ -1,0 +1,97 @@
+backbone:
+    type: 'resnet50'
+    pretrained: 'resnet50.model'
+    unfix_layers: ['layer3', 'layer2']
+    unfix_steps: [10, 10]
+    unfix_lr: [0.1, 0.1]
+    kwargs:
+        used_layers: [3]
+
+adjust:
+    adjust: true
+    type: 'AdjustLayer'
+    kwargs:
+        in_channels: 1024
+        out_channels: 256
+
+siamese:
+    type: 'UPChannelSiamese'
+
+attention:
+    attention: true
+    type: 'PixelAttention'
+
+cornerdet:
+    cornerdet: true
+    type: 'SepCornerDet'
+
+train:
+    roi_augmentation:
+        ratio: 0.5
+        shift: 8
+        scale: 0.1
+    creg_weight: 0.25
+    epoch: 20
+    pretrain_epoch: 1
+    response_size: 25
+    template_pool_size: 5
+    search_pool_size: 7
+    train_dataset:
+        names:
+        - 'youtubebb'
+        - 'got10k'
+        - 'vid'
+        - 'coco'
+        - 'det'
+        youtubebb:
+            num_use: 100000
+            root: '/ssd/feiji/Research/Data/y2b_crop511'
+            anno: '/home/feiji/Research/Data/data_preprocess/y2b/train_largeclean.json'
+        got10k:
+            num_use: 100000
+            root: '/ssd/feiji/Research/Data/GOT-10k_crop511'
+            anno: '/home/feiji/Research/Data/data_preprocess/got10k/train_largeclean.json'
+        vid:
+            num_use: 50000
+            root: '/ssd/feiji/Research/Data/VID_crop511'
+            anno: '/home/feiji/Research/Data/data_preprocess/vid/train_largeclean.json'
+        coco:
+            num_use: 50000
+            root: '/ssd/feiji/Research/Data/COCO_crop511'
+            anno: '/home/feiji/Research/Data/data_preprocess/coco/train2017_largeclean.json'
+        det:
+            num_use: 50000
+            root: '/ssd/feiji/Research/Data/DET_crop511'
+            anno: '/home/feiji/Research/Data/data_preprocess/det/train_largeclean.json'
+
+        video_per_epoch: 350000
+
+        augmentation:
+            neg: 0.2
+            gray: 0.25
+            search:
+                shift: 64
+                scale: 0.18
+                blur: 0.2
+
+    lr:
+        type: 'log'
+        start_lr: 0.001
+        end_lr: 0.0001
+        pretrain:
+            start_lr: 0.0005
+            type: 'step'
+            step: 1
+            epoch: 1
+        warmup:
+            start_lr: 0.0006
+            end_lr: 0.001
+            type: 'step'
+            step: 1
+            epoch: 4
+
+track:
+    response_size: 25
+    penalty_k: 0.055
+    window_influence: 0.42
+    lr: 0.2

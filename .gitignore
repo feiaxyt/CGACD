@@ -1,0 +1,16 @@
+dataset
+*.pyc
+checkpoint
+result
+hp_search_result
+runs
+*.o
+*.so
+checkpoint*
+*.model
+results
+reports
+.idea
+*.pth
+.ipynb_checkpoints
+raw_results

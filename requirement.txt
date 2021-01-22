@@ -1,0 +1,14 @@
+numpy
+pytorch==1.1.0
+torchvision==0.3.0
+opencv-python==3.4.3.18
+pyyaml
+yacs
+tqdm
+colorama
+matplotlib
+cython
+tensorboardX
+futures
+easydict
+numba
